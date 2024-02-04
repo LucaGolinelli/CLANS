@@ -17,12 +17,12 @@ class Network3D:
         self.selected_nodes_colors_array = []
         self.selected_nodes_size_array = []
         self.nodes_outline_color_array = []
-        self.nodes_outline_width = 1.0
-        self.nodes_size_large = 10
-        self.nodes_size_medium = 8
-        self.nodes_size_small = 6
-        self.nodes_size_tiny = 4
-        self.nodes_size = self.nodes_size_medium
+        self.nodes_outline_width = 0.0
+        self.nodes_size_large = 8  # MOD was 10
+        self.nodes_size_medium = 6  # MOD was 8
+        self.nodes_size_small = 4  # MOD was 6
+        self.nodes_size_tiny = 2  # MOD was 4
+        self.nodes_size = self.nodes_size_small  # MOD was medium
         self.text_size_large = 12
         self.text_size_medium = 10
         self.text_size_small = 8
@@ -32,7 +32,7 @@ class Network3D:
         self.nodes_symbol = 'disc'
         self.nodes_default_color = [0.0, 0.0, 0.0, 1.0]
         self.nodes_highlight_color = [0.0, 1.0, 1.0, 1.0] # Tourquise
-        self.nodes_outline_default_color = [0.0, 0.0, 0.0, 1.0]
+        self.nodes_outline_default_color = [0.0, 0.0, 0.0, 0.0]
         self.selected_outline_color = [1.0, 0.0, 1.0, 1.0]
         self.highlighted_outline_color = [1.0, 0.0, 1.0, 1.0]
         self.att_values_bins = np.array([0.0, 0.2, 0.4, 0.6, 0.8, 1.0])
@@ -99,6 +99,7 @@ class Network3D:
         self.scatter_plot.set_gl_state('translucent', blend=True, depth_test=True)
         self.scatter_plot.order = -1
         self.scatter_plot.interactive = True
+        self.scatter_plot.antialias = 0.0
 
         # Create a dict to hold the scatter_by_groups visuals (in 2D presentation,
         # display the different groups as separate visuals, to enable control of the order in which they are displayed)
@@ -173,7 +174,7 @@ class Network3D:
             self.nodes_size = self.nodes_size_small
         else:
             self.nodes_size = self.nodes_size_tiny
-        self.selected_nodes_size = self.nodes_size + 5
+        self.selected_nodes_size = self.nodes_size + 4
 
         # Build the initial color arrays (for the nodes and their outline) and the nodes-size array
         for seq_index in range(cfg.run_params['total_sequences_num']):
