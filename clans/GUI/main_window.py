@@ -69,13 +69,13 @@ class MainWindow(QMainWindow):
         self.setGeometry(50, 50, 900, 850)
 
         # Define layouts within the main window
-        self.main_layout = QVBoxLayout()
         self.round_layout = QHBoxLayout()
         self.calc_layout = QHBoxLayout()
         self.selection_layout = QHBoxLayout()
         self.view_layout = QHBoxLayout()
         self.groups_layout = QHBoxLayout()
         self.display_layout = QHBoxLayout()
+        self.main_layout = QVBoxLayout()
 
         self.main_layout.setSpacing(4)
 
@@ -152,12 +152,14 @@ class MainWindow(QMainWindow):
         #self.tools_menu = self.main_menu.addMenu("Tools")
 
         # Create the canvas (the graph area)
-        self.canvas = scene.SceneCanvas(size=(800, 750), keys='interactive', show=True, bgcolor='w')
+        # EDITED
+        oversize = False
+        shape = (4000, 3000) if oversize else (800, 600)
+        self.canvas = scene.SceneCanvas(size=shape, resizable=not oversize, keys='interactive', show=True, dpi=300, bgcolor='w')
         self.canvas.events.mouse_move.connect(self.on_canvas_mouse_move)
         self.canvas.events.mouse_double_click.connect(self.on_canvas_mouse_double_click)
         self.canvas.events.key_press.connect(self.on_canvas_key_press)
         self.canvas.events.key_release.connect(self.on_canvas_key_release)
-        self.main_layout.addWidget(self.canvas.native)
 
         # Add a ViewBox to let the user zoom/rotate
         self.view = self.canvas.central_widget.add_view()
@@ -399,6 +401,9 @@ class MainWindow(QMainWindow):
         self.groups_layout.addStretch()
 
         self.main_layout.addLayout(self.groups_layout)
+
+        # Add canvas        
+        self.main_layout.addWidget(self.canvas.native)
 
         self.widget = QWidget()
         self.widget.setLayout(self.main_layout)
